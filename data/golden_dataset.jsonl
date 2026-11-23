@@ -1,0 +1,6 @@
+{"id": "g1", "prompt": "What is RAG?", "response": "RAG is retrieval augmented generation that grounds a language model on retrieved documents.", "reference": "retrieval augmented generation grounds language model retrieved documents"}
+{"id": "g2", "prompt": "How does LLM-as-judge work?", "response": "An LLM judge scores model outputs against a rubric or reference answer.", "reference": "llm judge scores outputs rubric reference"}
+{"id": "g3", "prompt": "What is a golden dataset?", "response": "A golden dataset is a fixed set of verified examples used for regression testing of models.", "reference": "golden dataset fixed verified examples regression testing"}
+{"id": "g4", "prompt": "What is drift monitoring?", "response": "Drift monitoring tracks changes in model output quality and input distributions over time.", "reference": "drift monitoring tracks changes output quality distributions time"}
+{"id": "g5", "prompt": "What is recall@10?", "response": "Recall at 10 measures the fraction of relevant documents found in the top 10 retrieved results.", "reference": "recall fraction relevant documents top retrieved results"}
+{"id": "g6", "prompt": "Why use pgvector?", "response": "pgvector stores embeddings in PostgreSQL and supports similarity search with SQL.", "reference": "pgvector embeddings postgresql similarity search sql"}
