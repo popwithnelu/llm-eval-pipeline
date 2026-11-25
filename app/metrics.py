@@ -1,17 +1,28 @@
 """Aggregate metrics, regression comparison and drift detection."""
 import math
+import statistics
 
 
 def summarize(scores: list[float], threshold: float = 0.6) -> dict:
     if not scores:
-        return {"count": 0, "mean": 0.0, "pass_rate": 0.0, "min": 0.0, "max": 0.0}
+        return {"count": 0, "mean": 0.0, "median": 0.0, "stddev": 0.0,
+                "pass_rate": 0.0, "min": 0.0, "max": 0.0}
     return {
         "count": len(scores),
         "mean": round(sum(scores) / len(scores), 4),
+        "median": round(statistics.median(scores), 4),
+        "stddev": round(statistics.pstdev(scores), 4) if len(scores) > 1 else 0.0,
         "pass_rate": round(sum(1 for s in scores if s >= threshold) / len(scores), 4),
         "min": min(scores),
         "max": max(scores),
     }
+
+
+def failed_cases(per_case: dict[str, float], threshold: float = 0.6) -> list[str]:
+    """Case ids scoring below `threshold`, weakest first — the triage list
+    you read first when a run regresses."""
+    return [cid for cid, s in sorted(per_case.items(), key=lambda kv: kv[1])
+            if s < threshold]
 
 
 def compare_runs(baseline: dict, candidate: dict, tolerance: float = 0.02) -> dict:
