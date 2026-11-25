@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.metrics import compare_runs, drift_score, summarize
+from app.metrics import compare_runs, drift_score, failed_cases, summarize
 from app.runner import load_golden, run_evaluation
 import os
 
@@ -26,6 +26,16 @@ def test_regression_comparison_flags_drop():
 def test_drift_low_for_similar_high_for_shifted():
     assert drift_score([0.8, 0.85, 0.9, 0.82], [0.81, 0.86, 0.88, 0.83]) < 0.2
     assert drift_score([0.9, 0.92, 0.88, 0.91], [0.1, 0.2, 0.15, 0.05]) > 0.2
+
+
+def test_summarize_distribution_and_failed_cases():
+    s = summarize([0.2, 0.8, 1.0])
+    assert s["median"] == 0.8 and s["stddev"] > 0
+    assert summarize([0.9])["stddev"] == 0.0
+    # weakest first, passing cases excluded
+    assert failed_cases({"a": 0.9, "b": 0.2, "c": 0.5}) == ["b", "c"]
+    report = run_evaluation(load_golden(GOLDEN))
+    assert "failed_cases" in report
 
 
 def test_api_evaluate():
