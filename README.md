@@ -9,7 +9,7 @@ over score distributions.
 
 ```
 golden_dataset.jsonl -> runner -> LLMJudge (live model or offline heuristic)
-                     -> summarize (mean / pass rate)
+                     -> summarize (mean / median / stddev / pass rate + failed_cases, weakest first)
                      -> compare_runs (regression report vs a baseline run)
                      -> drift_score (PSI: <0.1 stable, 0.1–0.2 moderate, >0.2 major drift)
 ```
