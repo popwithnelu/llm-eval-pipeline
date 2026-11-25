@@ -2,7 +2,7 @@
 import json
 
 from .judge import LLMJudge
-from .metrics import summarize
+from .metrics import failed_cases, summarize
 
 
 def load_golden(path: str) -> list[dict]:
@@ -21,5 +21,6 @@ def run_evaluation(cases: list[dict], judge: LLMJudge | None = None,
         per_case[case["id"]] = judge.score(case["prompt"], response, case["reference"])
     report = summarize(list(per_case.values()))
     report["per_case"] = per_case
+    report["failed_cases"] = failed_cases(per_case)
     report["judge_mode"] = judge.mode
     return report
